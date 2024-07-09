@@ -201,15 +201,11 @@ def infocalypse_reinsert(ui_, repo, **opts):
 
 option levels:
 
-1: Re-insert top key(s) and graph(s).
-
-2: Re-insert top key(s) if possible, graph(s), latest update.
-
-3: Re-insert top key(s) if possible, graph(s), all bootstrap CHKs.
-
-4: Insert redundant keys for > 7Mb updates.
-
-5: Re-insert redundant updates > 7Mb.
+- 1: Re-insert top key(s) and graph(s).
+- 2: Re-insert top key(s) if possible, graph(s), latest update.
+- 3: Re-insert top key(s) if possible, graph(s), all bootstrap CHKs.
+- 4: Insert redundant keys for > 7Mb updates.
+- 5: Re-insert redundant updates > 7Mb.
 
 Levels 1 and 4 require the private key.
     """
