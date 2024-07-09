@@ -106,9 +106,9 @@ def infocalypse_create(ui_, repo, local_identity=None, **opts):
         new_name = USK(insert_uri).get_repo_name()
 
         if new_name in names:
-            replace = ui_.prompt(b"A repository with the name '{0}' is already"
-                                 b" published by {1}. Replace it? [y/N]"
-                                 .format(new_name.decode("utf-8"), local_identity).encode("utf-8"),
+            replace = ui_.prompt((b"A repository with the name '%b' is already"
+                                  b" published by %b. Replace it? [y/N]")
+                                 % (new_name, local_identity),
                                  default='n')
 
             if not replace.lower() in ['y', b'y']:

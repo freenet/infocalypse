@@ -8,7 +8,7 @@
 # This software may be used and distributed according to the terms
 # of the GNU General Public License, incorporated herein by reference.
 
-from mercurial import util
+from mercurial import util, error
 try:
     from mercurial.peer import peerrepository
 except ImportError:
@@ -27,7 +27,7 @@ class freenetrepo(peerrepository):
 
     def __init__(self, ui, path, create):
         if create: # pragma: no cover
-            raise util.Abort('Cannot create a freenet repository, yet.')
+            raise error.Abort('Cannot create a freenet repository, yet.')
         self.ui = ui
         # if "/" in path and "#" in path.split("/")[-1]:
         #     path = "/".join(path.split("/")[:-1] +

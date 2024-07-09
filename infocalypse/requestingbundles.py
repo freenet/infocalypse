@@ -386,13 +386,13 @@ class RequestingBundles(RetryingRequestList):
 
         assert not self.top_key_tuple is None
         if self.parent.params.get('DUMP_TOP_KEY', False):
-            text = "Fixed up top key CHKs:\n"
+            text = b"Fixed up top key CHKs:\n"
             for update in self.top_key_tuple[1]:
                 for chk in update[3]:
                     if chk in edges:
-                        text += "   " + str(edges[chk]) + ":" + chk + "\n"
+                        text += b"   " + edges[chk] + b":" + chk + b"\n"
                     else:
-                        text += "   BAD TOP KEY DATA!" + ":" + chk + "\n"
+                        text += b"   BAD TOP KEY DATA!" + b":" + chk + b"\n"
             self.parent.ctx.ui_.status(text)
 
         all_heads = get_heads(graph)
