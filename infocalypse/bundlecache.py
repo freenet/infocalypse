@@ -128,7 +128,7 @@ class BundleCache:
 
         cached = self.get_cached_bundle(index_pair, out_file)
         if not cached is None:
-            #print "make_bundle -- cache hit: ", index_pair
+            # print("make_bundle -- cache hit: ", index_pair)
             return cached
 
         delete_out_file = out_file is None
@@ -148,7 +148,8 @@ class BundleCache:
                 #print 'HEADS:', list(heads)
                 commands.bundle(self.ui_, self.repo, out_file,
                                 base=list(parents),
-                                rev=list(heads))
+                                rev=list(heads),
+                                type=b"zstd-v2") # use bundle v2 format: support more caching and bookmarks
             finally:
                 self.ui_.popbuffer()
 

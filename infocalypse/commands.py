@@ -106,9 +106,9 @@ def infocalypse_create(ui_, repo, local_identity=None, **opts):
         new_name = USK(insert_uri).get_repo_name()
 
         if new_name in names:
-            replace = ui_.prompt(b"A repository with the name '{0}' is already"
-                                 b" published by {1}. Replace it? [y/N]"
-                                 .format(new_name.decode("utf-8"), local_identity).encode("utf-8"),
+            replace = ui_.prompt((b"A repository with the name '%b' is already"
+                                  b" published by %b. Replace it? [y/N]")
+                                 % (new_name, local_identity),
                                  default='n')
 
             if not replace.lower() in ['y', b'y']:
@@ -201,15 +201,11 @@ def infocalypse_reinsert(ui_, repo, **opts):
 
 option levels:
 
-1: Re-insert top key(s) and graph(s).
-
-2: Re-insert top key(s) if possible, graph(s), latest update.
-
-3: Re-insert top key(s) if possible, graph(s), all bootstrap CHKs.
-
-4: Insert redundant keys for > 7Mb updates.
-
-5: Re-insert redundant updates > 7Mb.
+- 1: Re-insert top key(s) and graph(s).
+- 2: Re-insert top key(s) if possible, graph(s), latest update.
+- 3: Re-insert top key(s) if possible, graph(s), all bootstrap CHKs.
+- 4: Insert redundant keys for > 7Mb updates.
+- 5: Re-insert redundant updates > 7Mb.
 
 Levels 1 and 4 require the private key.
     """

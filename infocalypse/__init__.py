@@ -349,7 +349,11 @@ from .keys import strip_protocol, parse_repo_path, USK
 
 _freenetschemes = ('freenet', ) # TODO: add fn
 for _scheme in _freenetschemes:
-    hg.schemes[_scheme] = freenetrepo
+    # added in Mercurial 6.4
+    if hasattr(hg, 'repo_schemes') and hasattr(hg, 'peer_schemes'):
+        hg.peer_schemes[_scheme] = freenetrepo
+    else:
+        hg.schemes[_scheme] = freenetrepo
 
 #----------------------------------------------------------"
 
@@ -595,7 +599,7 @@ def findcommonoutgoing(orig, *args, **opts):
     else:
         return orig(*args, **opts)
 # really wrap the functions
-extensions.wrapfunction(discovery, b'findcommonoutgoing', findcommonoutgoing)
+extensions.wrapfunction(discovery, 'findcommonoutgoing', findcommonoutgoing)
 
 # wrap the commands
 

@@ -175,7 +175,7 @@ class NonBlockingSocket(IAsyncSocket):
         if self.buffer:
             chunk = self.buffer[:SEND_BLOCK]
             sent = self.socket.send(chunk)
-            #print "WRITING:", self.buffer[:sent]
+            # print("WRITING:", self.buffer[:sent])
             assert sent >= 0
             #print "TO_WIRE:"
             #print repr(self.buffer[:sent])
@@ -532,6 +532,7 @@ class FCPConnection:
         assert not client.response
         assert not b'Identifier' in client.in_params.fcp_params
         assert not 'Identifier' in client.in_params.fcp_params
+        # print(client.in_params.fcp_params)
         client.in_params.fcp_params = self.convert_params_keys_to_bytes(client.in_params.fcp_params)
         identifier = make_id()
         client.in_params.fcp_params[b'Identifier'] = identifier
