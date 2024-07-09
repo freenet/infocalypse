@@ -128,7 +128,7 @@ class BundleCache:
 
         cached = self.get_cached_bundle(index_pair, out_file)
         if not cached is None:
-            #print "make_bundle -- cache hit: ", index_pair
+            # print("make_bundle -- cache hit: ", index_pair)
             return cached
 
         delete_out_file = out_file is None
