@@ -148,7 +148,8 @@ class BundleCache:
                 #print 'HEADS:', list(heads)
                 commands.bundle(self.ui_, self.repo, out_file,
                                 base=list(parents),
-                                rev=list(heads))
+                                rev=list(heads),
+                                type=b"zstd-v2") # use bundle v2 format: support more caching and bookmarks
             finally:
                 self.ui_.popbuffer()
 
