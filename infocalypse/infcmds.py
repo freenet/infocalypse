@@ -234,7 +234,7 @@ def get_config_info(ui_, opts):
         if opts.get('uri'):
             arg_name = b'uri'
         else:
-            assert opts.get('requesturi')
+            assert opts.get('requesturi'), "--nosearch requires --uri parameter"
             arg_name = b'requesturi'
 
         ui_.status(b'--nosearch ignored because --%s was not set.\n' % arg_name)
@@ -641,7 +641,9 @@ def execute_push(ui_, repo, params, stored_cfg):
                                 params.get('TO_VERSIONS', ('tip',)),
                                 request_uri, # None is allowed
                                 is_keypair)
-        run_until_quiescent(update_sm, params['POLL_SECS'])
+        run_until_quiescent(update_sm,
+                            params['POLL_SECS'],
+                            close_socket=False)
 
         if update_sm.get_state(QUIESCENT).arrived_from(((FINISHING,))):
             inserted_to = update_sm.get_state(INSERTING_URI).get_request_uris()
@@ -649,11 +651,30 @@ def execute_push(ui_, repo, params, stored_cfg):
                        b'\n'.join(inserted_to))
         else:
             extra = b''
+            try_inserting = False
             if update_sm.ctx.get('UP_TO_DATE', False):
                 extra = b'. Local changes already in Freenet'
+            else:
+                try_inserting = True
+                extra = b'. Trying to insert'
             ui_.status(b"Push failed%b.\n" % extra)
+            if try_inserting:
+                update_sm.start_inserting(UpdateGraph(),
+                                          params.get('TO_VERSIONS', (b'tip',)),
+                                          params['INSERT_URI'])
 
-        handle_updating_config(repo, update_sm, params, stored_cfg)
+                run_until_quiescent(update_sm, params['POLL_SECS'])
+
+                if update_sm.get_state(QUIESCENT).arrived_from(((FINISHING,))):
+                    inserted_to = update_sm.get_state(INSERTING_URI).get_request_uris()
+                    ui_.status(b"Inserted to:\n%b\n" % b'\n'.join(inserted_to))
+                    handle_updating_config(repo, update_sm, params, stored_cfg)
+                else:
+                    # print(update_sm.__dict__)
+                    ui_.status(b"Create failed.\n")
+            else:
+                handle_updating_config(repo, update_sm, params, stored_cfg)
+        
     finally:
         cleanup(update_sm)
 
