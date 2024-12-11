@@ -392,7 +392,7 @@ def read_repo_listing(ui, identity, fcphost=None, fcpport=None):
     # lists.
 
     for name in repositories.keys():
-        ui.status(b"Found repository \"%b\".\n" % name)
+        ui.debug(b"Found repository \"%b\".\n" % name)
 
     # Convert values from USKs to strings - USKs are not expected elsewhere.
     for key in list(repositories.keys()):
